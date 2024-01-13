@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "DoorPrintGenerator/1.0.0": {
+        "runtime": {
+          "DoorPrintGenerator.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DoorPrintGenerator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
