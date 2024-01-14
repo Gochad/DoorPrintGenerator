@@ -10,25 +10,23 @@
         <BlazorCaptureElement>
                 <div class="header">
                     <img src="/logo_uj.png" alt="placeholder"/>
-                    <p class="roomNumber">300</p>
+                    <p class="roomNumber">@roomNumber</p>
                 </div>
-                <p class="names">Dr jan nowak</p>
-        
+                <p class="names">@surnames</p>
+                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }">Zapisz do PDF</BlazorCapturePdfButton>
             </BlazorCaptureElement>
-            <BlazorForm class="grid">
-                <BlazorLabel>Wpisz tekst:</BlazorLabel>
-                <input type="text" @bind="textInput"/>
-        
-                <BlazorLabel>Nazwiska</BlazorLabel>
-                <input type="text" @bind="surnames"/>
-        
-                <BlazorLabel>Nr pokoju:</BlazorLabel>
+        <BlazorForm class="grid">
+            <div class="field">
+                <label>Numer sali</label>
                 <input type="text" @bind="roomNumber"/>
-            </BlazorForm>
+            </div>
+            <div class="field">
+                <label>Nazwiska</label>
+                <input type="text" @bind="surnames"/>
+            </div>
+        </BlazorForm>
     </div>
-    <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }">Zapisz do PDF</BlazorCapturePdfButton>
 </BlazorLibrary>
-
 @code {
     private string textInput;
     private string surnames;

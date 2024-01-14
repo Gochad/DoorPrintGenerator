@@ -8,7 +8,7 @@ img {
 .header {
     display: flex;
 }
-.grid {
+.grid .field {
     display: grid;
 }
 
