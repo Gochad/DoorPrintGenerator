@@ -1,3 +1,4 @@
+using BlazorSchool.Components.Web.Core;
 using DoorPrintGenerator.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddBlazorComponents();
 
 var app = builder.Build();
 
