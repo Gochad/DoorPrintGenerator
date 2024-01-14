@@ -1,7 +1,37 @@
 ﻿@page "/"
+@using BlazorSchool.Components.Web.UI
+@using BlazorSchool.Components.Web.Variants
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Forms</PageTitle>
 
-<h1>Hello, world!</h1>
+<BlazorLibrary>
+    <div class="positioning">
+        <BlazorCaptureElement>
+                <div class="header">
+                    <img src="/logo_uj.png" alt="placeholder"/>
+                    <p class="roomNumber">300</p>
+                </div>
+                <p class="names">Dr jan nowak</p>
+        
+            </BlazorCaptureElement>
+            <BlazorForm class="grid">
+                <BlazorLabel>Wpisz tekst:</BlazorLabel>
+                <input type="text" @bind="textInput"/>
+        
+                <BlazorLabel>Nazwiska</BlazorLabel>
+                <input type="text" @bind="surnames"/>
+        
+                <BlazorLabel>Nr pokoju:</BlazorLabel>
+                <input type="text" @bind="roomNumber"/>
+            </BlazorForm>
+    </div>
+    <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }">Zapisz do PDF</BlazorCapturePdfButton>
+</BlazorLibrary>
 
-Welcome to your new app.
+@code {
+    private string textInput;
+    private string surnames;
+    private string roomNumber;
+}
+
