@@ -14,7 +14,7 @@
             <BlazorCaptureElement Token="Form" class="flex-fill">
                 <div class="header">
                     <img src="/logo_uj.png" alt="placeholder"/>
-                    @if (edit)
+                    @if (editMode)
                     {
                         <textarea class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
                     }
@@ -24,7 +24,7 @@
                     }
                 </div>
 
-                @if (edit)
+                @if (editMode)
                 {
                     <textarea class="names" rows="4" cols="35" @bind="@names"></textarea>
                 }
@@ -46,9 +46,16 @@
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { edit = true; })"> Edytuj </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { edit = false; })"> Zapisz </Button>
-            <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj </Button>
+            @if (editMode)
+            {
+                <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz zmiany </Button>
+            }
+            else
+            {
+                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
+            }
+            
 
         </div>
     </div>
@@ -90,7 +97,7 @@
     private int maxAllowedFiles = 3;
     private bool isLoading;
     private string names = "";
-    private bool edit = false;
+    private bool editMode = false;
     
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
