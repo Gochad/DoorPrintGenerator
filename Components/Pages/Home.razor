@@ -116,11 +116,17 @@
     {
         await Names.ShowAsync();
     }
+    
+    private async Task OnShowLoadClick()
+    {
+        await Load.ShowAsync();
+    }
 
     private async Task OnHideModalClick()
     {
         await RoomNumber.HideAsync();
         await Names.HideAsync();
+        await Load.HideAsync();
     }
 
     private void AddName()
