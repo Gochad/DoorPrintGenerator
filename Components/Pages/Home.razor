@@ -1,6 +1,9 @@
 ﻿@page "/"
 @using BlazorSchool.Components.Web.UI
 @using BlazorSchool.Components.Web.Variants
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment Environment
 @rendermode InteractiveServer
 
 <PageTitle>Forms</PageTitle>
@@ -28,6 +31,7 @@
 
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
             <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
 
         </div>
@@ -58,12 +62,50 @@
     </FooterTemplate>
 </Modal>
 
+<Modal @ref="Load" title="Wczytaj" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <InputFile OnChange="@LoadFiles" multiple />
+    </BodyTemplate>
+    <FooterTemplate>
+    </FooterTemplate>
+</Modal>
+
 @code {
     private Modal RoomNumber = default!;
     private Modal Names = default!;
+    private Modal Load = default!;
     private string textInput;
     private List<string> names = new() { "" };
     private string roomNumber;
+    private ElementReference Img;
+    private IBrowserFile loadedFile;
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+    
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                var trustedFileName = Path.GetRandomFileName();
+                var path = Path.Combine(Environment.ContentRootPath,
+                    Environment.EnvironmentName, "unsafe_uploads",
+                    trustedFileName);
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                
+                loadedFile = file;
+            }
+            catch (Exception ex){}
+        }
+
+        isLoading = false;
+    }
 
     private async Task OnShowRoomNumberClick()
     {
