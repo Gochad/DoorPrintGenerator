@@ -7,29 +7,89 @@
 
 <BlazorLibrary>
     <div class="positioning">
-        <BlazorCaptureElement>
+        <div class="main-page">
+            <BlazorCaptureElement Token="Form" class="flex-fill">
                 <div class="header">
                     <img src="/logo_uj.png" alt="placeholder"/>
                     <p class="roomNumber">@roomNumber</p>
                 </div>
-                <p class="names">@surnames</p>
-                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }">Zapisz do PDF</BlazorCapturePdfButton>
-            </BlazorCaptureElement>
-        <BlazorForm class="grid">
-            <div class="field">
-                <label>Numer sali</label>
-                <input type="text" @bind="roomNumber"/>
-            </div>
-            <div class="field">
-                <label>Nazwiska</label>
-                <input type="text" @bind="surnames"/>
-            </div>
-        </BlazorForm>
-    </div>
-</BlazorLibrary>
-@code {
-    private string textInput;
-    private string surnames;
-    private string roomNumber;
-}
 
+                <div class="shownames">
+                    @foreach (var name in names)
+                    {
+                        <p class="names">@name</p>
+                    }
+                </div>
+
+            </BlazorCaptureElement>
+        </div>
+
+        <div class="grid">
+
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
+            <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
+
+        </div>
+    </div>
+
+</BlazorLibrary>
+
+<Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <input type="text" @bind="roomNumber"/>
+    </BodyTemplate>
+    <FooterTemplate>
+    </FooterTemplate>
+</Modal>
+
+<Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <div></div>
+        @for (var i = 0; i < names.Count; i++)
+        {
+            var i1 = i;
+            <input type="text" @oninput="@((name) => { names[i1] = (string)name.Value!; })"/>
+        }
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" Size="Size.Medium" @onclick="AddName"> Dodaj nazwisko </Button>
+        <Button Color="ButtonColor.Primary" Size="Size.Medium" @onclick="RemoveLastName"> Usuń ostatnie </Button>
+    </FooterTemplate>
+</Modal>
+
+@code {
+    private Modal RoomNumber = default!;
+    private Modal Names = default!;
+    private string textInput;
+    private List<string> names = new() { "" };
+    private string roomNumber;
+
+    private async Task OnShowRoomNumberClick()
+    {
+        await RoomNumber.ShowAsync();
+    }
+
+    private async Task OnShowNamesClick()
+    {
+        await Names.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        await RoomNumber.HideAsync();
+        await Names.HideAsync();
+    }
+
+    private void AddName()
+    {
+        names.Add("");
+    }
+
+    private void RemoveLastName()
+    {
+        if (names.Count > 1)
+            names.RemoveAt(names.Count - 1);
+    }
+
+}
