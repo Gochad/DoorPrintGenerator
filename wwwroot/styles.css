@@ -8,8 +8,22 @@ img {
 .header {
     display: flex;
 }
-.grid .field {
-    display: grid;
+.grid {
+    margin-left: auto;
+    border: #0c4128 2px;
+    border-radius: 5px;
+    .field {
+        display: grid;
+        margin: 40px;
+        width: 20%;
+    }
+    .buttons {
+        display: grid;
+    }
+}
+.card {
+    border: #1a1e21 2px;
+    width: 75%;
 }
 
 .roomNumber {
@@ -24,4 +38,5 @@ img {
     font-weight: 500;
     font-size: 70px;
     margin: 50px 100px;
+    width: 50%;
 }

@@ -1,13 +1,16 @@
 ﻿@page "/"
 @using BlazorSchool.Components.Web.UI
 @using BlazorSchool.Components.Web.Variants
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment Environment
 @rendermode InteractiveServer
 
 <PageTitle>Forms</PageTitle>
 
 <BlazorLibrary>
     <div class="positioning">
-        <BlazorCaptureElement>
+        <BlazorCaptureElement class="card">
                 <div class="header">
                     <img src="/logo_uj.png" alt="placeholder"/>
                     <p class="roomNumber">@roomNumber</p>
@@ -24,6 +27,13 @@
                 <label>Nazwiska</label>
                 <input type="text" @bind="surnames"/>
             </div>
+            <div class="buttons">
+                <BlazorButton type="submit" class="btn btn-primary">Zapisz</BlazorButton>
+                <BlazorButton type="submit" class="btn btn-primary">Wczytaj</BlazorButton>
+            </div>
+            <label>
+                    <InputFile OnChange="@LoadFiles" multiple />
+                </label>
         </BlazorForm>
     </div>
 </BlazorLibrary>
@@ -31,5 +41,37 @@
     private string textInput;
     private string surnames;
     private string roomNumber;
+    
+    private ElementReference Img;
+    
+    
+    private IBrowserFile loadedFile;
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                var trustedFileName = Path.GetRandomFileName();
+                var path = Path.Combine(Environment.ContentRootPath,
+                    Environment.EnvironmentName, "unsafe_uploads",
+                    trustedFileName);
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                
+                loadedFile = file;
+            }
+            catch (Exception ex){}
+        }
+
+        isLoading = false;
+    }
 }
 
