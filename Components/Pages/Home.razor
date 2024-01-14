@@ -14,15 +14,29 @@
             <BlazorCaptureElement Token="Form" class="flex-fill">
                 <div class="header">
                     <img src="/logo_uj.png" alt="placeholder"/>
-                    <p class="roomNumber">@roomNumber</p>
+                    @if (edit)
+                    {
+                        <textarea class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
+                    }
+                    else
+                    {
+                        <p class="roomNumber">@roomNumber</p>
+                    }
                 </div>
 
-                <div class="shownames">
-                    @foreach (var name in names)
+                @if (edit)
+                {
+                    <textarea class="names" rows="4" cols="35" @bind="@names"></textarea>
+                }
+                else
+                {
+                    @foreach (var name in names.Split('\n'))
                     {
                         <p class="names">@name</p>
                     }
-                </div>
+                }
+                
+
 
             </BlazorCaptureElement>
         </div>
@@ -32,6 +46,8 @@
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { edit = true; })"> Edytuj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { edit = false; })"> Zapisz </Button>
             <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
 
         </div>
@@ -49,16 +65,8 @@
 
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
-        <div></div>
-        @for (var i = 0; i < names.Count; i++)
-        {
-            var i1 = i;
-            <input type="text" @oninput="@((name) => { names[i1] = (string)name.Value!; })"/>
-        }
     </BodyTemplate>
     <FooterTemplate>
-        <Button Color="ButtonColor.Primary" Size="Size.Medium" @onclick="AddName"> Dodaj nazwisko </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.Medium" @onclick="RemoveLastName"> Usuń ostatnie </Button>
     </FooterTemplate>
 </Modal>
 
@@ -75,13 +83,14 @@
     private Modal Names = default!;
     private Modal Load = default!;
     private string textInput;
-    private List<string> names = new() { "" };
     private string roomNumber;
     private ElementReference Img;
     private IBrowserFile loadedFile;
     private long maxFileSize = 1024 * 15;
     private int maxAllowedFiles = 3;
     private bool isLoading;
+    private string names = "";
+    private bool edit = false;
     
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
@@ -127,17 +136,6 @@
         await RoomNumber.HideAsync();
         await Names.HideAsync();
         await Load.HideAsync();
-    }
-
-    private void AddName()
-    {
-        names.Add("");
-    }
-
-    private void RemoveLastName()
-    {
-        if (names.Count > 1)
-            names.RemoveAt(names.Count - 1);
     }
 
 }
