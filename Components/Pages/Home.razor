@@ -2,6 +2,7 @@
 @using BlazorSchool.Components.Web.UI
 @using BlazorSchool.Components.Web.Variants
 @using System.IO
+@using System.Text.Json
 @using Microsoft.AspNetCore.Hosting
 @inject IWebHostEnvironment Environment
 @rendermode InteractiveServer
@@ -47,6 +48,8 @@
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="SaveAsJson"> Zapisz do JSONA </Button>
+
             @if (editMode)
             {
                 <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz zmiany </Button>
@@ -89,7 +92,6 @@
     private Modal RoomNumber = default!;
     private Modal Names = default!;
     private Modal Load = default!;
-    private string textInput;
     private string roomNumber;
     private ElementReference Img;
     private IBrowserFile loadedFile;
@@ -98,29 +100,33 @@
     private bool isLoading;
     private string names = "";
     private bool editMode = false;
+
+    private Info info;
     
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        isLoading = true;
+        loadedFile = e.File;
 
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        using (var stream = loadedFile.OpenReadStream())
         {
-            try
+            var options = new JsonSerializerOptions
             {
-                var trustedFileName = Path.GetRandomFileName();
-                var path = Path.Combine(Environment.ContentRootPath,
-                    Environment.EnvironmentName, "unsafe_uploads",
-                    trustedFileName);
+                PropertyNameCaseInsensitive = true
+            };
 
-                await using FileStream fs = new(path, FileMode.Create);
-                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-                
-                loadedFile = file;
-            }
-            catch (Exception ex){}
+            info = await JsonSerializer.DeserializeAsync<Info>(stream, options);
+            names = info.Names;
+            roomNumber = info.RoomNumber;
         }
-
-        isLoading = false;
+    }
+    private async Task SaveAsJson()
+    {
+        Info data = new Info();
+        data.RoomNumber = roomNumber;
+        data.Names = names;
+        var json = System.Text.Json.JsonSerializer.Serialize(data);
+        
+        await JS.InvokeAsync("saveAsFile", json, "data.json");
     }
 
     private async Task OnShowRoomNumberClick()
