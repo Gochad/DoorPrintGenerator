@@ -1,0 +1,64 @@
+img {
+    width: 200px;
+    height: 300px;
+}
+
+.positioning {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+}
+
+.grid {
+    width: 25%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    margin: 10px;
+    justify-content: flex-end;
+}
+
+.shownames {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5px;
+    margin: 10px;
+}
+
+.main-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 75%;
+}
+
+.field {
+    width: 100%;
+    margin: 10px;
+}
+
+.field Button {
+    width: 100%;
+}
+
+.roomNumber {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 100px;
+    margin: 100px;
+}
+
+.names {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 70px;
+    margin: 0 100px;
+}

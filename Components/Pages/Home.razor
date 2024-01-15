@@ -1,7 +1,159 @@
 ﻿@page "/"
+@using BlazorSchool.Components.Web.UI
+@using BlazorSchool.Components.Web.Variants
+@using System.IO
+@using System.Text.Json
+@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment Environment
+@using Microsoft.JSInterop;
+@inject IJSRuntime JS
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Forms</PageTitle>
 
-<h1>Hello, world!</h1>
+<BlazorLibrary>
+    <div class="positioning">
+        <div class="main-page">
+            <BlazorCaptureElement Token="Form" class="flex-fill">
+                <div class="header">
+                    <img src="/logo_uj.png" alt="placeholder"/>
+                    @if (editMode)
+                    {
+                        <textarea class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
+                    }
+                    else
+                    {
+                        <p class="roomNumber">@roomNumber</p>
+                    }
+                </div>
 
-Welcome to your new app.
+                @if (editMode)
+                {
+                    <textarea class="names" rows="4" cols="35" @bind="@names"></textarea>
+                }
+                else
+                {
+                    @foreach (var name in names.Split('\n'))
+                    {
+                        <p class="names">@name</p>
+                    }
+                }
+                
+
+
+            </BlazorCaptureElement>
+        </div>
+
+        <div class="grid">
+
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="SaveAsJson"> Zapisz do JSONA </Button>
+
+            @if (editMode)
+            {
+                <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz zmiany </Button>
+            }
+            else
+            {
+                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
+            }
+            
+
+        </div>
+    </div>
+
+</BlazorLibrary>
+
+<Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <input type="text" @bind="roomNumber"/>
+    </BodyTemplate>
+    <FooterTemplate>
+    </FooterTemplate>
+</Modal>
+
+<Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
+    <BodyTemplate>
+    </BodyTemplate>
+    <FooterTemplate>
+    </FooterTemplate>
+</Modal>
+
+<Modal @ref="Load" title="Wczytaj" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <InputFile OnChange="@LoadFiles" multiple />
+    </BodyTemplate>
+    <FooterTemplate>
+    </FooterTemplate>
+</Modal>
+
+@code {
+    private Modal RoomNumber = default!;
+    private Modal Names = default!;
+    private Modal Load = default!;
+    private string roomNumber;
+    private ElementReference Img;
+    private IBrowserFile loadedFile;
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+    private string names = "";
+    private bool editMode = false;
+
+    private Info info;
+    
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        loadedFile = e.File;
+
+        using (var stream = loadedFile.OpenReadStream())
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            info = await JsonSerializer.DeserializeAsync<Info>(stream, options);
+            names = info.Names;
+            roomNumber = info.RoomNumber;
+        }
+    }
+    private async Task SaveAsJson()
+    {
+        Info data = new Info();
+        data.RoomNumber = roomNumber;
+        data.Names = names;
+        var json = System.Text.Json.JsonSerializer.Serialize(data);
+        
+        var jsRuntime = JS;
+        
+        await jsRuntime.InvokeVoidAsync("saveAsFile", "data.json", json, "application/json");
+        
+    }
+
+    private async Task OnShowRoomNumberClick()
+    {
+        await RoomNumber.ShowAsync();
+    }
+
+    private async Task OnShowNamesClick()
+    {
+        await Names.ShowAsync();
+    }
+    
+    private async Task OnShowLoadClick()
+    {
+        await Load.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        await RoomNumber.HideAsync();
+        await Names.HideAsync();
+        await Load.HideAsync();
+    }
+
+}
