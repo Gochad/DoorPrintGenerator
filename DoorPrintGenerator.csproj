@@ -7,8 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazor.Bootstrap" Version="1.10.5"/>
-        <PackageReference Include="BlazorSchool.Components.Web" Version="7.2.0"/>
+        <PackageReference Include="Blazor.Bootstrap" Version="1.10.5" />
+        <PackageReference Include="BlazorSchool.Components.Web" Version="7.2.0" />
+        <PackageReference Include="xunit" Version="2.6.6" />
     </ItemGroup>
 
 </Project>
