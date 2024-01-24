@@ -16,7 +16,7 @@
         <div class="main-page">
             <BlazorCaptureElement Token="Form" class="flex-fill">
                 <div class="header">
-                    <img src="/logo_uj.png" alt="placeholder"/>
+                    <img src="/logo_uj.png" alt="placeholder" />
                     @if (editMode)
                     {
                         <textarea class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
@@ -38,7 +38,7 @@
                         <p class="names">@name</p>
                     }
                 }
-                
+
 
 
             </BlazorCaptureElement>
@@ -46,21 +46,43 @@
 
         <div class="grid">
 
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"
+                style="font-family:'Caveat';"> Numer sali </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj
+            </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="SaveAsJson"> Zapisz do JSONA </Button>
 
             @if (editMode)
             {
-                <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz zmiany </Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz
+                    zmiany </Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeRoomNumberFont("Caveat"))">Czcionka numeru sali: Caveat</Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeRoomNumberFont("Oswald"))">Czcionka numeru sali: Oswald</Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeRoomNumberFont("Montserrat"))">Czcionka numeru sali: Montserrat</Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeRoomNumberFont("Helvetica Neue"))">Czcionka numeru sali: default</Button>
+
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeNamesFont("Caveat"))">Czcionka nazwisk: Caveat</Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeNamesFont("Oswald"))">Czcionka nazwisk: Oswald</Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeNamesFont("Montserrat"))">Czcionka nazwisk: Montserrat</Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Small"
+                    @onclick="@(async () =>  ChangeNamesFont("Helvetica Neue"))">Czcionka nazwisk: default</Button>
+
             }
             else
             {
-                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF</BlazorCapturePdfButton>
+                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF
+                </BlazorCapturePdfButton>
             }
-            
+
 
         </div>
     </div>
@@ -69,7 +91,8 @@
 
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
-        <input type="text" @bind="roomNumber"/>
+        @* input[type='text'] { font-size: 24px; font-family: monospace; } *@
+        <input type="text" style="font-family:@roomNumberFont;" @bind="roomNumber" />
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -77,6 +100,10 @@
 
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
+        @foreach (var name in names.Split('\n'))
+        {
+            <p style="font-family: @namesFont;" class="names">@name</p>
+        }
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -102,9 +129,11 @@
     private bool isLoading;
     private string names = "";
     private bool editMode = false;
+    private string roomNumberFont = "Caveat";
+    private string namesFont;
 
     private Info info;
-    
+
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
         loadedFile = e.File;
@@ -112,14 +141,25 @@
         using (var stream = loadedFile.OpenReadStream())
         {
             var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
+                {
+                    PropertyNameCaseInsensitive = true
+                };
 
             info = await JsonSerializer.DeserializeAsync<Info>(stream, options);
             names = info.Names;
             roomNumber = info.RoomNumber;
         }
+    }
+    private void ChangeRoomNumberFont(string font)
+    {
+        roomNumberFont = font;
+        StateHasChanged();
+    }
+
+    private void ChangeNamesFont(string font)
+    {
+        namesFont = font;
+        StateHasChanged();
     }
     private async Task SaveAsJson()
     {
@@ -127,11 +167,11 @@
         data.RoomNumber = roomNumber;
         data.Names = names;
         var json = System.Text.Json.JsonSerializer.Serialize(data);
-        
+
         var jsRuntime = JS;
-        
+
         await jsRuntime.InvokeVoidAsync("saveAsFile", "data.json", json, "application/json");
-        
+
     }
 
     private async Task OnShowRoomNumberClick()
@@ -143,7 +183,7 @@
     {
         await Names.ShowAsync();
     }
-    
+
     private async Task OnShowLoadClick()
     {
         await Load.ShowAsync();
