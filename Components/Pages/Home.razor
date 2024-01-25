@@ -19,23 +19,23 @@
                     <img src="/logo_uj.png" alt="placeholder" />
                     @if (editMode)
                     {
-                        <textarea class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
+                        <textarea style="font-family: @roomNumberFont" class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
                     }
                     else
                     {
-                        <p class="roomNumber">@roomNumber</p>
+                        <p style="font-family: @roomNumberFont" class="roomNumber">@roomNumber</p>
                     }
                 </div>
 
                 @if (editMode)
                 {
-                    <textarea class="names" rows="4" cols="35" @bind="@names"></textarea>
+                    <textarea style="font-family: @namesFont" class="names" rows="4" cols="35" @bind="@names"></textarea>
                 }
                 else
                 {
                     @foreach (var name in names.Split('\n'))
                     {
-                        <p class="names">@name</p>
+                        <p style="font-family: @namesFont" class="names">@name</p>
                     }
                 }
 
@@ -91,8 +91,6 @@
 
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
-        @* input[type='text'] { font-size: 24px; font-family: monospace; } *@
-        <input type="text" style="font-family:@roomNumberFont;" @bind="roomNumber" />
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -100,10 +98,6 @@
 
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
-        @foreach (var name in names.Split('\n'))
-        {
-            <p style="font-family: @namesFont;" class="names">@name</p>
-        }
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>

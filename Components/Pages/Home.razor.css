@@ -50,14 +50,14 @@ img {
 }
 
 .roomNumber {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
     font-weight: 600;
     font-size: 100px;
     margin: 100px;
 }
 
 .names {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
     font-weight: 500;
     font-size: 70px;
     margin: 0 100px;
