@@ -46,8 +46,7 @@
 
         <div class="grid">
 
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"
-                style="font-family:'Caveat';"> Numer sali </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj
@@ -58,24 +57,6 @@
             {
                 <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz
                     zmiany </Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeRoomNumberFont("Caveat"))">Czcionka numeru sali: Caveat</Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeRoomNumberFont("Oswald"))">Czcionka numeru sali: Oswald</Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeRoomNumberFont("Montserrat"))">Czcionka numeru sali: Montserrat</Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeRoomNumberFont("Helvetica Neue"))">Czcionka numeru sali: default</Button>
-
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeNamesFont("Caveat"))">Czcionka nazwisk: Caveat</Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeNamesFont("Oswald"))">Czcionka nazwisk: Oswald</Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeNamesFont("Montserrat"))">Czcionka nazwisk: Montserrat</Button>
-                <Button Color="ButtonColor.Primary" Size="Size.Small"
-                    @onclick="@(async () =>  ChangeNamesFont("Helvetica Neue"))">Czcionka nazwisk: default</Button>
-
             }
             else
             {
@@ -91,6 +72,15 @@
 
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" 
+            @onclick="@(async () =>  ChangeRoomNumberFont("Caveat"))">Caveat</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeRoomNumberFont("Oswald"))">Oswald</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeRoomNumberFont("Montserrat"))">Montserrat</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+                @onclick="@(async () =>  ChangeRoomNumberFont("Helvetica Neue"))">Default</Button>
+        
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -98,6 +88,14 @@
 
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeNamesFont("Caveat"))">Caveat</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeNamesFont("Oswald"))">Oswald</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeNamesFont("Montserrat"))">Montserrat</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeNamesFont("Helvetica Neue"))">Default</Button>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
