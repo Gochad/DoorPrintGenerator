@@ -19,23 +19,27 @@
                     <img src="/logo_uj.png" alt="placeholder" />
                     @if (editMode)
                     {
-                        <textarea style="font-family: @roomNumberFont" class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
+                        <textarea style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr" class="roomNumber"
+                            rows="1" cols="20" @bind="@roomNumber"></textarea>
                     }
                     else
                     {
-                        <p style="font-family: @roomNumberFont" class="roomNumber">@roomNumber</p>
+                        <p style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr" class="roomNumber">
+                            @roomNumber
+                        </p>
                     }
                 </div>
 
                 @if (editMode)
                 {
-                    <textarea style="font-family: @namesFont" class="names" rows="4" cols="35" @bind="@names"></textarea>
+                    <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr" class="names" rows="4" cols="35"
+                        @bind="@names"></textarea>
                 }
                 else
                 {
                     @foreach (var name in names.Split('\n'))
                     {
-                        <p style="font-family: @namesFont" class="names">@name</p>
+                        <p style="font-family: @namesFont; font-size:@namesFontSizeStr" class="names">@name</p>
                     }
                 }
 
@@ -72,15 +76,22 @@
 
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" 
-            @onclick="@(async () =>  ChangeRoomNumberFont("Caveat"))">Caveat</Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeRoomNumberFont("Oswald"))">Oswald</Button>
+            @onclick="@(async () =>  ChangeRoomNumberFont("Caveat"))">Caveat Font</Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeRoomNumberFont("Montserrat"))">Montserrat</Button>
+            @onclick="@(async () =>  ChangeRoomNumberFont("Oswald"))">Oswald Font</Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-                @onclick="@(async () =>  ChangeRoomNumberFont("Helvetica Neue"))">Default</Button>
-        
+            @onclick="@(async () =>  ChangeRoomNumberFont("Montserrat"))">Montserrat Font</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+            @onclick="@(async () =>  ChangeRoomNumberFont("Helvetica Neue"))">Default</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () =>  IncrementRoomNumberFont())">
+            Font
+            +</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () => DecrementRoomNumberFont())">
+            Font
+            -</Button>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -89,13 +100,19 @@
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Caveat"))">Caveat</Button>
+            @onclick="@(async () =>  ChangeNamesFont("Caveat"))">Caveat Font</Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Oswald"))">Oswald</Button>
+            @onclick="@(async () =>  ChangeNamesFont("Oswald"))">Oswald Font</Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Montserrat"))">Montserrat</Button>
+            @onclick="@(async () =>  ChangeNamesFont("Montserrat"))">Montserrat Font</Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
             @onclick="@(async () =>  ChangeNamesFont("Helvetica Neue"))">Default</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () =>  IncrementNamesFont())"> Font
+            +</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () => DecrementNamesFont())"> Font
+            -</Button>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -121,8 +138,12 @@
     private bool isLoading;
     private string names = "";
     private bool editMode = false;
-    private string roomNumberFont = "Caveat";
+    private string roomNumberFont;
     private string namesFont;
+    private int roomNumberFontSize = 75;
+    private int namesFontSize = 75;
+    private string roomNumberFontSizeStr = "75px";
+    private string namesFontSizeStr = "75px";
 
     private Info info;
 
@@ -142,6 +163,7 @@
             roomNumber = info.RoomNumber;
         }
     }
+
     private void ChangeRoomNumberFont(string font)
     {
         roomNumberFont = font;
@@ -153,6 +175,33 @@
         namesFont = font;
         StateHasChanged();
     }
+
+    private void IncrementRoomNumberFont()
+    {
+        roomNumberFontSize++;
+        roomNumberFontSizeStr = roomNumberFontSize.ToString() + "px";
+        StateHasChanged();
+    }
+    private void DecrementRoomNumberFont()
+    {
+        roomNumberFontSize--;
+        roomNumberFontSizeStr = roomNumberFontSize.ToString() + "px";
+        StateHasChanged();
+    }
+    private void IncrementNamesFont()
+    {
+        namesFontSize++;
+        namesFontSizeStr = namesFontSize.ToString() + "px";
+        StateHasChanged();
+    }
+
+    private void DecrementNamesFont()
+    {
+        namesFontSize--;
+        namesFontSizeStr = namesFontSize.ToString() + "px";
+        StateHasChanged();
+    }
+
     private async Task SaveAsJson()
     {
         Info data = new Info();
