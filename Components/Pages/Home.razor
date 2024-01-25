@@ -16,33 +16,65 @@
         <div class="main-page">
             <BlazorCaptureElement Token="Form" class="flex-fill">
                 <div class="header">
-                    <img src="/logo_uj.png" alt="placeholder" />
                     @if (editMode)
                     {
-                        <textarea style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr" class="roomNumber"
-                            rows="1" cols="20" @bind="@roomNumber"></textarea>
+                        <div draggable="true"
+                             @ondragend="OnDragLogoEnd" @ondragstart="OnDragLogoStart"
+                             style="position:absolute; top: @(logoOffsetY)px; left: @(logoOffsetX)px; border-color: black;">
+                            <div>
+                                <img src="/logo_uj.png" alt="placeholder"/>
+                            </div>
+                        </div>
                     }
                     else
                     {
-                        <p style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr" class="roomNumber">
-                            @roomNumber
-                        </p>
+                        <div style="position:absolute; top: @(logoOffsetY)px; left: @(logoOffsetX)px; border-color: black;">
+                            <img src="/logo_uj.png" alt="placeholder"/>
+                        </div>
+                    }
+
+                    @if (editMode)
+                    {
+                        <div draggable="true"
+                             @ondragend="OnDragRoomNumberEnd" @ondragstart="OnDragRoomNumberStart"
+                             style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
+                            <div>
+                                <textarea style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr" class="roomNumber"
+                                                            rows="1" cols="20" @bind="@roomNumber"></textarea>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
+                            <p style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr" class="roomNumber">
+                                @roomNumber
+                            </p>
+                        </div>
                     }
                 </div>
 
+
                 @if (editMode)
                 {
-                    <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr" class="names" rows="4" cols="35"
-                        @bind="@names"></textarea>
+                    <div draggable="true"
+                         @ondragend="OnDragNamesEnd" @ondragstart="OnDragNamesStart"
+                         style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
+                        <div>
+                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr" class="names" rows="4" cols="35"
+                                                    @bind="@names"></textarea>
+                        </div>
+                    </div>
                 }
                 else
                 {
-                    @foreach (var name in names.Split('\n'))
-                    {
-                        <p style="font-family: @namesFont; font-size:@namesFontSizeStr" class="names">@name</p>
-                    }
+                    <div style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
+                        @foreach (var name in names.Split('\n'))
+                        {
+                            <p style="font-family: @namesFont; font-size:@namesFontSizeStr" class="names">@name</p>
+                        }
+                    </div>
                 }
-
 
 
             </BlazorCaptureElement>
@@ -53,18 +85,22 @@
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })"> Edytuj
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })">
+                Edytuj
             </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="SaveAsJson"> Zapisz do JSONA </Button>
 
             @if (editMode)
             {
-                <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })"> Zapisz
-                    zmiany </Button>
+                <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })">
+                    Zapisz
+                    zmiany
+                </Button>
             }
             else
             {
-                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">Zapisz do PDF
+                <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">
+                    Zapisz do PDF
                 </BlazorCapturePdfButton>
             }
 
@@ -77,21 +113,31 @@
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeRoomNumberFont("Caveat"))">Caveat Font</Button>
+                @onclick="@(async () => ChangeRoomNumberFont("Caveat"))">
+            Caveat Font
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeRoomNumberFont("Oswald"))">Oswald Font</Button>
+                @onclick="@(async () => ChangeRoomNumberFont("Oswald"))">
+            Oswald Font
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeRoomNumberFont("Montserrat"))">Montserrat Font</Button>
+                @onclick="@(async () => ChangeRoomNumberFont("Montserrat"))">
+            Montserrat Font
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeRoomNumberFont("Helvetica Neue"))">Default</Button>
+                @onclick="@(async () => ChangeRoomNumberFont("Helvetica Neue"))">
+            Default
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () =>  IncrementRoomNumberFont())">
+                @onclick="@(async () => IncrementRoomNumberFont())">
             Font
-            +</Button>
+            +
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => DecrementRoomNumberFont())">
+                @onclick="@(async () => DecrementRoomNumberFont())">
             Font
-            -</Button>
+            -
+        </Button>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -100,19 +146,31 @@
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Caveat"))">Caveat Font</Button>
+                @onclick="@(async () => ChangeNamesFont("Caveat"))">
+            Caveat Font
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Oswald"))">Oswald Font</Button>
+                @onclick="@(async () => ChangeNamesFont("Oswald"))">
+            Oswald Font
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Montserrat"))">Montserrat Font</Button>
+                @onclick="@(async () => ChangeNamesFont("Montserrat"))">
+            Montserrat Font
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () =>  ChangeNamesFont("Helvetica Neue"))">Default</Button>
+                @onclick="@(async () => ChangeNamesFont("Helvetica Neue"))">
+            Default
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () =>  IncrementNamesFont())"> Font
-            +</Button>
+                @onclick="@(async () => IncrementNamesFont())">
+            Font
+            +
+        </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => DecrementNamesFont())"> Font
-            -</Button>
+                @onclick="@(async () => DecrementNamesFont())">
+            Font
+            -
+        </Button>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -120,7 +178,7 @@
 
 <Modal @ref="Load" title="Wczytaj" IsVerticallyCentered="true">
     <BodyTemplate>
-        <InputFile OnChange="@LoadFiles" multiple />
+        <InputFile OnChange="@LoadFiles" multiple/>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -147,6 +205,54 @@
 
     private Info info;
 
+
+    private double logoStartX, logoStartY, logoOffsetX = 100, logoOffsetY = 100;
+    private double roomNumberStartX, roomNumberStartY, roomNumberOffsetX = 400, roomNumberOffsetY = 100;
+    private double namesStartX, namesStartY, namesOffsetX = 0, namesOffsetY = 500;
+
+    private void OnDragLogoStart(DragEventArgs args)
+    {
+        logoStartX = args.ClientX;
+        logoStartY = args.ClientY;
+    }
+
+    private void OnDragLogoEnd(DragEventArgs args)
+    {
+        logoOffsetX += args.ClientX - logoStartX;
+        logoOffsetY += args.ClientY - logoStartY;
+        Console.WriteLine(logoOffsetX);
+        Console.WriteLine(logoOffsetY);
+    }
+
+    private void OnDragRoomNumberStart(DragEventArgs args)
+    {
+        roomNumberStartX = args.ClientX;
+        roomNumberStartY = args.ClientY;
+    }
+
+    private void OnDragRoomNumberEnd(DragEventArgs args)
+    {
+        roomNumberOffsetX += args.ClientX - roomNumberStartX;
+        roomNumberOffsetY += args.ClientY - roomNumberStartY;
+        Console.WriteLine(roomNumberOffsetX);
+        Console.WriteLine(roomNumberOffsetY);
+    }
+
+    private void OnDragNamesStart(DragEventArgs args)
+    {
+        namesStartX = args.ClientX;
+        namesStartY = args.ClientY;
+    }
+
+    private void OnDragNamesEnd(DragEventArgs args)
+    {
+        namesOffsetX += args.ClientX - namesStartX;
+        namesOffsetY += args.ClientY - namesStartY;
+        Console.WriteLine(namesOffsetX);
+        Console.WriteLine(namesOffsetY);
+    }
+
+
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
         loadedFile = e.File;
@@ -154,9 +260,9 @@
         using (var stream = loadedFile.OpenReadStream())
         {
             var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
+            {
+                PropertyNameCaseInsensitive = true
+            };
 
             info = await JsonSerializer.DeserializeAsync<Info>(stream, options);
             names = info.Names;
@@ -182,12 +288,14 @@
         roomNumberFontSizeStr = roomNumberFontSize.ToString() + "px";
         StateHasChanged();
     }
+
     private void DecrementRoomNumberFont()
     {
         roomNumberFontSize--;
         roomNumberFontSizeStr = roomNumberFontSize.ToString() + "px";
         StateHasChanged();
     }
+
     private void IncrementNamesFont()
     {
         namesFontSize++;
@@ -212,7 +320,6 @@
         var jsRuntime = JS;
 
         await jsRuntime.InvokeVoidAsync("saveAsFile", "data.json", json, "application/json");
-
     }
 
     private async Task OnShowRoomNumberClick()
