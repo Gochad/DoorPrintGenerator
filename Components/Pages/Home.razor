@@ -267,7 +267,23 @@
             info = await JsonSerializer.DeserializeAsync<Info>(stream, options);
             names = info.Names;
             roomNumber = info.RoomNumber;
+            roomNumberFont = info.RoomNumberFontName;
+            namesFont = info.NamesFontName;
+            roomNumberFontSizeStr = info.RoomNumberFontSize;
+            namesFontSizeStr = info.NamesFontSize;
+            roomNumberFontSize = Int32.Parse(info.RoomNumberFontSize.Substring(0, info.RoomNumberFontSize.Length - 2));
+            namesFontSize = Int32.Parse(info.NamesFontSize.Substring(0, info.NamesFontSize.Length - 2));
+            logoOffsetX = info.LogoOffsetX;
+            logoOffsetY = info.LogoOffsetY;
+            roomNumberOffsetX = info.RoomNumberOffsetX;
+            roomNumberOffsetY = info.RoomNumberOffsetY;
+            namesOffsetX = info.NamesOffsetX;
+            namesOffsetY = info.NamesOffsetY;
+            
+            StateHasChanged();
         }
+        
+        await Load.HideAsync();
     }
 
     private void ChangeRoomNumberFont(string font)
@@ -313,13 +329,25 @@
     private async Task SaveAsJson()
     {
         Info data = new Info();
+        
         data.RoomNumber = roomNumber;
         data.Names = names;
+        data.LogoOffsetX = logoOffsetX;
+        data.LogoOffsetY = logoOffsetY;
+        data.RoomNumberOffsetX = roomNumberOffsetX;
+        data.RoomNumberOffsetY = roomNumberOffsetY;
+        data.NamesOffsetX = namesOffsetX;
+        data.NamesOffsetY = namesOffsetY;
+        data.RoomNumberFontName = roomNumberFont;
+        data.NamesFontName = namesFont;
+        data.RoomNumberFontSize = roomNumberFontSizeStr;
+        data.NamesFontSize = namesFontSizeStr;
+        
         var json = System.Text.Json.JsonSerializer.Serialize(data);
 
         var jsRuntime = JS;
 
-        await jsRuntime.InvokeVoidAsync("saveAsFile", "data.json", json, "application/json");
+        await jsRuntime.InvokeVoidAsync("saveAsFile", $"{roomNumber}.json", json, "application/json");
     }
 
     private async Task OnShowRoomNumberClick()
