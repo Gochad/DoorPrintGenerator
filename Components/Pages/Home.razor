@@ -89,8 +89,8 @@
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })">
                 Edytuj
             </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="SaveAsJson"> Zapisz do JSONA </Button>
-
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowSaveJsonClick"> Zapisz do JSONA
+            </Button>
             @if (editMode)
             {
                 <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })">
@@ -191,10 +191,23 @@
     </FooterTemplate>
 </Modal>
 
+<Modal @ref="SaveJson" title="Podaj nazwę pliku .json" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <input type="text" @bind="jsonName" />
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" @onclick="@(async () => SaveAsJson())">
+            Zapisz
+        </Button>
+        @* <input type="submit" value="Zapisz" onclick="@SaveAsJson()" /> *@
+    </BodyTemplate>
+    <FooterTemplate>
+    </FooterTemplate>
+</Modal>
+
 @code {
     private Modal RoomNumber = default!;
     private Modal Names = default!;
     private Modal Load = default!;
+    private Modal SaveJson = default!;
     private string roomNumber;
     private ElementReference Img;
     private IBrowserFile loadedFile;
@@ -203,6 +216,7 @@
     private bool isLoading;
     private string names = "";
     private bool editMode = false;
+    private string jsonName;
 
     private string roomNumberFont;
     private string namesFont;
@@ -369,7 +383,7 @@
 
         var jsRuntime = JS;
 
-        await jsRuntime.InvokeVoidAsync("saveAsFile", $"{roomNumber}.json", json, "application/json");
+        await jsRuntime.InvokeVoidAsync("saveAsFile", $"{jsonName}.json", json, "application/json");
     }
 
     private async Task OnShowRoomNumberClick()
@@ -385,6 +399,11 @@
     private async Task OnShowLoadClick()
     {
         await Load.ShowAsync();
+    }
+
+    private async Task OnShowSaveJsonClick()
+    {
+        await SaveJson.ShowAsync();
     }
 
     private async Task OnHideModalClick()
