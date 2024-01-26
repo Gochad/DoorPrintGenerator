@@ -48,8 +48,8 @@
                             style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
                             <div>
                                 <textarea
-                                    style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor; width: 700px"
-                                    class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
+                                    style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor;"
+                                    class="roomNumber" rows="1" cols="10" @bind="@roomNumber"></textarea>
                             </div>
                         </div>
                     }
@@ -71,8 +71,8 @@
                     <div draggable="true" @ondragend="OnDragNamesEnd" @ondragstart="OnDragNamesStart"
                         style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
                         <div>
-                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor; width: 1500px;"
-                                class="names" cols="4" @bind="@names"></textarea>
+                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor;"
+                                class="names" rows="4" cols="30" @bind="@names"></textarea>
                         </div>
                     </div>
                 }
@@ -93,25 +93,25 @@
 
         <div class="grid">
 
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> Numer sali </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> Nazwiska </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> Wczytaj </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowRoomNumberClick"> <h1>Numer sali</h1> </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowNamesClick"> <h1>Nazwiska</h1> </Button>
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowLoadClick"> <h1>Wczytaj</h1> </Button>
             <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = true; })">
-                Edytuj
+                <h1>Edytuj</h1>
             </Button>
-            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowSaveJsonClick"> Zapisz do JSONA
+            <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="OnShowSaveJsonClick"> <h1>Zapisz do JSONA</h1>
             </Button>
             @if (editMode)
             {
                 <Button Color="ButtonColor.Primary" Size="Size.Large" @onclick="@(() => { editMode = false; })">
-                    Zapisz
-                    zmiany
+                    <h1>Zapisz
+                    zmiany</h1>
                 </Button>
             }
             else
             {
                 <BlazorCapturePdfButton Variants="new[] { BaseVariants.Primary }" TargetToken="Form">
-                    Zapisz do PDF
+                    <h1>Zapisz do PDF</h1>
                 </BlazorCapturePdfButton>
             }
 
@@ -133,7 +133,7 @@
         </select>
         <div>
             <label for="head">Wybierz Kolor </label>
-            <input type="color" id="roomNumberColor" name="head" @bind="roomNumberColor" />
+            <input type="color" id="roomNumberColor" name="head" @bind="roomNumberColor" style="margin-top: 4px" />
         </div>
         <label for="head">Wybierz Rozmiar </label>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
@@ -158,7 +158,7 @@
         </select>
         <div>
             <label for="head">Wybierz kolor</label>
-            <input type="color" id="namesColor" name="head" @bind="namesColor" />
+            <input type="color" id="namesColor" name="head" @bind="namesColor" style="margin-top: 4px"/>
         </div>
         <label for="head">Wybierz Rozmiar </label>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
