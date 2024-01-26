@@ -71,8 +71,8 @@
                     <div draggable="true" @ondragend="OnDragNamesEnd" @ondragstart="OnDragNamesStart"
                         style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
                         <div>
-                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor;"
-                                class="names" rows="4" cols="30" @bind="@names"></textarea>
+                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor; resize: horizontal"
+                                class="names" rows="4" cols="25" @bind="@names"></textarea>
                         </div>
                     </div>
                 }
