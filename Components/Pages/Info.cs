@@ -9,7 +9,11 @@ public class Info
     public string? RoomNumberFontSize { get; set; }
     public string? NamesFontName { get; set; }
     public string? NamesFontSize { get; set; }
+    public string? RoomNumberFontColor { get; set; }
+    public string? NamesFontColor { get; set; }
     
+    public double LogoWidth { get; set; }
+    public double LogoHeight { get; set; }
     public double LogoOffsetX { get; set; }
     public double LogoOffsetY { get; set; }
     
