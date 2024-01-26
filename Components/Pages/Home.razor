@@ -18,37 +18,41 @@
                 <div class="header">
                     @if (editMode)
                     {
-                        <div draggable="true" @ondragend="OnDragLogoEnd" @ondragstart="OnDragLogoStart"
-                            style="position:absolute; top: @(logoOffsetY)px; left: @(logoOffsetX)px; border-color: black;">
+                        <div draggable="true"
+                             @ondragend="OnDragLogoEnd" @ondragstart="OnDragLogoStart"
+                             style="position:absolute; top: @(logoOffsetY)px; left: @(logoOffsetX)px; border-color: black; height: @(logoHeight)px; width: @(logoWidth)px">
                             <div>
-                                <img src="/logo_uj.png" alt="placeholder" />
+                                <img style="width: 100%; height: 100%; object-fit: cover;" src="/logo_uj.png" alt="placeholder"/>
+                                <Button Color="ButtonColor.Primary" Size="Size.ExtraSmall" @onclick="@(() => { logoHeight *= 1.1; logoWidth *= 1.1; })"> + </Button>
+                                <Button Color="ButtonColor.Primary" Size="Size.ExtraSmall" @onclick="@(() => { logoHeight *= 0.9; logoWidth *= 0.9; })"> - </Button>
                             </div>
                         </div>
                     }
                     else
                     {
-                        <div style="position:absolute; top: @(logoOffsetY)px; left: @(logoOffsetX)px; border-color: black;">
-                            <img src="/logo_uj.png" alt="placeholder" />
+                        <div style="position:absolute; top: @(logoOffsetY)px; left: @(logoOffsetX)px; border-color: black; height: @(logoHeight)px; width: @(logoWidth)px">
+                            <div>
+                                <img style="width: 100%; height: 100%; object-fit: cover;" src="/logo_uj.png" alt="placeholder"/>
+                            </div>
+
                         </div>
                     }
 
                     @if (editMode)
                     {
-                        <div draggable="true" @ondragend="OnDragRoomNumberEnd" @ondragstart="OnDragRoomNumberStart"
-                            style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
+                        <div draggable="true"
+                             @ondragend="OnDragRoomNumberEnd" @ondragstart="OnDragRoomNumberStart"
+                             style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
                             <div>
-                                <textarea
-                                    style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor"
-                                    class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
+                                <textarea style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor"  class="roomNumber"
+                                                            rows="1" cols="20" @bind="@roomNumber"></textarea>
                             </div>
                         </div>
                     }
                     else
                     {
-                        <div
-                            style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
-                            <p style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor"
-                                class="roomNumber">
+                        <div style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
+                            <p style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor" class="roomNumber">
                                 @roomNumber
                             </p>
                         </div>
@@ -58,11 +62,12 @@
 
                 @if (editMode)
                 {
-                    <div draggable="true" @ondragend="OnDragNamesEnd" @ondragstart="OnDragNamesStart"
-                        style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
+                    <div draggable="true"
+                         @ondragend="OnDragNamesEnd" @ondragstart="OnDragNamesStart"
+                         style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
                         <div>
-                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor"
-                                class="names" rows="4" cols="35" @bind="@names"></textarea>
+                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor" class="names" rows="4" cols="35"
+                                                    @bind="@names"></textarea>
                         </div>
                     </div>
                 }
@@ -71,8 +76,7 @@
                     <div style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
                         @foreach (var name in names.Split('\n'))
                         {
-                            <p style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor" class="names">
-                                @name</p>
+                            <p style="font-family: @namesFont; font-size:@namesFontSizeStr; color: @namesColor" class="names">@name</p>
                         }
                     </div>
                 }
@@ -114,33 +118,33 @@
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Caveat"))">
+                @onclick="@(async () => ChangeRoomNumberFont("Caveat"))">
             Caveat Font
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Oswald"))">
+                @onclick="@(async () => ChangeRoomNumberFont("Oswald"))">
             Oswald Font
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Montserrat"))">
+                @onclick="@(async () => ChangeRoomNumberFont("Montserrat"))">
             Montserrat Font
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Helvetica Neue"))">
+                @onclick="@(async () => ChangeRoomNumberFont("Helvetica Neue"))">
             Default
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => IncrementRoomNumberFont())">
+                @onclick="@(async () => IncrementRoomNumberFont())">
             Font
             +
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => DecrementRoomNumberFont())">
+                @onclick="@(async () => DecrementRoomNumberFont())">
             Font
             -
         </Button>
         <div>
-            <input type="color" id="roomNumberColor" name="head" @bind="roomNumberColor" />
+            <input type="color" id="roomNumberColor" name="head" @bind="roomNumberColor"/>
             <label for="head">Font Color</label>
         </div>
     </BodyTemplate>
@@ -150,32 +154,34 @@
 
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" @onclick="@(async () => ChangeNamesFont("Caveat"))">
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+                @onclick="@(async () => ChangeNamesFont("Caveat"))">
             Caveat Font
         </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" @onclick="@(async () => ChangeNamesFont("Oswald"))">
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
+                @onclick="@(async () => ChangeNamesFont("Oswald"))">
             Oswald Font
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeNamesFont("Montserrat"))">
+                @onclick="@(async () => ChangeNamesFont("Montserrat"))">
             Montserrat Font
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeNamesFont("Helvetica Neue"))">
+                @onclick="@(async () => ChangeNamesFont("Helvetica Neue"))">
             Default
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => IncrementNamesFont())">
+                @onclick="@(async () => IncrementNamesFont())">
             Font
             +
         </Button>
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => DecrementNamesFont())">
+                @onclick="@(async () => DecrementNamesFont())">
             Font
             -
         </Button>
         <div>
-            <input type="color" id="namesColor" name="head" @bind="namesColor" />
+            <input type="color" id="namesColor" name="head" @bind="namesColor"/>
             <label for="head">Font Color</label>
         </div>
     </BodyTemplate>
@@ -185,7 +191,7 @@
 
 <Modal @ref="Load" title="Wczytaj" IsVerticallyCentered="true">
     <BodyTemplate>
-        <InputFile OnChange="@LoadFiles" multiple />
+        <InputFile OnChange="@LoadFiles" multiple/>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -226,6 +232,8 @@
     private string namesFontSizeStr = "75px";
     private string roomNumberColor;
     private string namesColor;
+    private double logoHeight = 200;
+    private double logoWidth = 200;
 
     private Info info;
 
@@ -284,9 +292,9 @@
         using (var stream = loadedFile.OpenReadStream())
         {
             var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
+            {
+                PropertyNameCaseInsensitive = true
+            };
 
             info = await JsonSerializer.DeserializeAsync<Info>(stream, options);
             names = info.Names;
