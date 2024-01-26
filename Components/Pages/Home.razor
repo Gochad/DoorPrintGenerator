@@ -48,7 +48,7 @@
                             style="position:absolute; top: @(roomNumberOffsetY)px; left: @(roomNumberOffsetX)px; border-color: black;">
                             <div>
                                 <textarea
-                                    style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor"
+                                    style="font-family: @roomNumberFont; font-size:@roomNumberFontSizeStr; color: @roomNumberColor; width: 700px"
                                     class="roomNumber" rows="1" cols="20" @bind="@roomNumber"></textarea>
                             </div>
                         </div>
@@ -71,8 +71,8 @@
                     <div draggable="true" @ondragend="OnDragNamesEnd" @ondragstart="OnDragNamesStart"
                         style="position:absolute; top: @(namesOffsetY)px; left: @(namesOffsetX)px; border-color: black;">
                         <div>
-                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor"
-                                class="names" rows="4" cols="35" @bind="@names"></textarea>
+                            <textarea style="font-family: @namesFont; font-size:@namesFontSizeStr; color:@namesColor; width: 1500px;"
+                                class="names" cols="4" @bind="@names"></textarea>
                         </div>
                     </div>
                 }
@@ -184,7 +184,6 @@
         <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" @onclick="@(async () => SaveAsJson())">
             Zapisz
         </Button>
-        @* <input type="submit" value="Zapisz" onclick="@SaveAsJson()" /> *@
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -245,8 +244,6 @@
     {
         logoOffsetX += args.ClientX - logoStartX;
         logoOffsetY += args.ClientY - logoStartY;
-        Console.WriteLine(logoOffsetX);
-        Console.WriteLine(logoOffsetY);
     }
 
     private void OnDragRoomNumberStart(DragEventArgs args)
@@ -259,8 +256,6 @@
     {
         roomNumberOffsetX += args.ClientX - roomNumberStartX;
         roomNumberOffsetY += args.ClientY - roomNumberStartY;
-        Console.WriteLine(roomNumberOffsetX);
-        Console.WriteLine(roomNumberOffsetY);
     }
 
     private void OnDragNamesStart(DragEventArgs args)
@@ -273,8 +268,6 @@
     {
         namesOffsetX += args.ClientX - namesStartX;
         namesOffsetY += args.ClientY - namesStartY;
-        Console.WriteLine(namesOffsetX);
-        Console.WriteLine(namesOffsetY);
     }
 
 
