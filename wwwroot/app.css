@@ -13,6 +13,26 @@
     src: url(fonts/Montserrat-Italic-VariableFont_wght.ttf);
 }
 
+@font-face {
+    font-family: "CuteFont";
+    src: url(fonts/CuteFont-Regular.ttf);
+}
+
+@font-face {
+    font-family: "DancingScript";
+    src: url(fonts/DancingScript-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url(fonts/Roboto-ThinItalic.ttf);
+}
+
+@font-face {
+    font-family: "SingleDay";
+    src: url(fonts/SingleDay-Regular.ttf);
+}
+
 html,
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

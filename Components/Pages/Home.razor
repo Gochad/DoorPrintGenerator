@@ -123,36 +123,24 @@
 
 <Modal @ref="RoomNumber" title="Numer sali" IsVerticallyCentered="true">
     <BodyTemplate>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Caveat"))">
-            Caveat Font
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Oswald"))">
-            Oswald Font
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Montserrat"))">
-            Montserrat Font
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeRoomNumberFont("Helvetica Neue"))">
-            Default
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => IncrementRoomNumberFont())">
-            Font
-            +
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => DecrementRoomNumberFont())">
-            Font
-            -
-        </Button>
+        <label for="fonts">Wybierz czcionkę:</label>
+
+        <select class="select-element" @bind="roomNumberFont">
+            @foreach (var font in fonts)
+            {
+                <option value="@font">@font</option>
+            }
+        </select>
         <div>
+            <label for="head">Wybierz Kolor </label>
             <input type="color" id="roomNumberColor" name="head" @bind="roomNumberColor" />
-            <label for="head">Font Color</label>
         </div>
+        <label for="head">Wybierz Rozmiar </label>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () => IncrementRoomNumberFont())">+</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () => DecrementRoomNumberFont())">-</Button>
+
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -160,34 +148,23 @@
 
 <Modal @ref="Names" title="Nazwiska" IsVerticallyCentered="true">
     <BodyTemplate>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" @onclick="@(async () => ChangeNamesFont("Caveat"))">
-            Caveat Font
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" @onclick="@(async () => ChangeNamesFont("Oswald"))">
-            Oswald Font
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeNamesFont("Montserrat"))">
-            Montserrat Font
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge"
-            @onclick="@(async () => ChangeNamesFont("Helvetica Neue"))">
-            Default
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => IncrementNamesFont())">
-            Font
-            +
-        </Button>
-        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
-            @onclick="@(async () => DecrementNamesFont())">
-            Font
-            -
-        </Button>
+        <label for="fonts">Wybierz czcionkę:</label>
+
+        <select class="select-element" @bind="namesFont">
+            @foreach (var font in fonts)
+            {
+                <option value="@font">@font</option>
+            }
+        </select>
         <div>
+            <label for="head">Wybierz kolor</label>
             <input type="color" id="namesColor" name="head" @bind="namesColor" />
-            <label for="head">Font Color</label>
         </div>
+        <label for="head">Wybierz Rozmiar </label>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () => IncrementNamesFont())">+</Button>
+        <Button Color="ButtonColor.Primary" Size="Size.ExtraLarge" style="margin-top:4px"
+            @onclick="@(async () => DecrementNamesFont())">-</Button>
     </BodyTemplate>
     <FooterTemplate>
     </FooterTemplate>
@@ -238,6 +215,18 @@
     private string namesColor;
     private double logoHeight = 200;
     private double logoWidth = 200;
+
+    private List<string> fonts = new List<string>()
+{
+"Oswald",
+"Caveat",
+"Helvetica Neue",
+"Montserrat",
+"CuteFont",
+"DancingScript",
+"Roboto",
+"SingleDay"
+};
 
     private Info info;
 
