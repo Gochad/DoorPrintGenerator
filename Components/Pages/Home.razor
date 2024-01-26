@@ -315,6 +315,10 @@
             roomNumberOffsetY = info.RoomNumberOffsetY;
             namesOffsetX = info.NamesOffsetX;
             namesOffsetY = info.NamesOffsetY;
+            roomNumberColor = info.RoomNumberFontColor;
+            namesColor = info.NamesFontColor;
+            logoHeight = info.LogoHeight;
+            logoWidth = info.LogoWidth;
 
             StateHasChanged();
         }
@@ -390,6 +394,10 @@
         data.NamesFontName = namesFont;
         data.RoomNumberFontSize = roomNumberFontSizeStr;
         data.NamesFontSize = namesFontSizeStr;
+        data.RoomNumberFontColor = roomNumberColor;
+        data.NamesFontColor = namesColor;
+        data.LogoHeight = logoHeight;
+        data.LogoWidth = logoWidth;
 
         var json = System.Text.Json.JsonSerializer.Serialize(data);
 
